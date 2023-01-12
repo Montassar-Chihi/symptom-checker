@@ -1,0 +1,8 @@
+flask
+flask-smorest
+python-dotenv
+flask_sqlalchemy
+flask_security 
+bcrypt
+PyJWT
+email_validator

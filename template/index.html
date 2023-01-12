@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Symptoms Checker</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <h1 style="margin: auto;text-align: center;color: rgb(139, 34, 34);font-size: 3rem;margin:2rem auto -1rem;">
+        Symptom Checker API
+    </h1>
+    <div style="display: inline-block;width: 40%;padding: 2rem;float: left;margin-top: 4rem;">
+        <h2 style="margin: auto;text-align: center;color: rgb(139, 34, 34);font-size: 2rem;">
+            How to Access The API ?
+        </h2>
+        <p style="display:block;padding: 2rem;font-size: 1rem;text-align: justify;width: 100%;line-height: 20pt;">
+            The token should be added to the request by the client by using a query string variable with a name equal to the configuration value of SECURITY_TOKEN_AUTHENTICATION_KEY or in a request header named that of the configuration value of SECURITY_TOKEN_AUTHENTICATION_HEADER
+        </p>
+        <h2 style="margin: auto;text-align: center;color: rgb(139, 34, 34);font-size: 2rem;">
+            How to send or recieve data ? (data structure)
+        </h2>
+        <ul>
+            <li>
+                <h3 style="text-align: left;color: rgb(139, 34, 34);font-size: 1.5rem;margin:2rem auto;">Diseases</h3>
+                <span>Structure when sending data :
+                    <pre>
+                        {
+                            "omimId" : int,                      #required/unique
+                            "diseaseName" : string,              #required
+                            "diseaseSymbol" : string,            #required
+                            "alternativeNames" : string,         #required
+                            "Inheritance" : string               #required
+                        }
+                    </pre>
+                </span>
+                <span>Structure when recieving data :
+                    <pre>
+                        {
+                            "Inheritance": "",
+                            "alternativeNames": "corona , covid , sars-cov-19",
+                            "diseaseName": "Covid 19",
+                            "diseaseSymbol": "cov-19",
+                            "id": 1,
+                            "omimId": 12675,
+                            "symptoms": []
+                        }
+                    </pre>
+                </span>
+            </li>
+            <li>
+                <h3 style="text-align: left;color: rgb(139, 34, 34);font-size: 1.5rem;margin:2rem auto;">Symptoms</h3>
+                <span>Structure when sending data :
+                    <pre>
+                        {   
+                            "Description" : string ,           #required
+                            "hpoTerm" : string ,               #required
+                            "Frequency" : string,              #required
+                            "disease_id" : int
+                        }
+                    </pre>
+                </span>
+                <span>Structure when recieving data : 
+                    <pre>
+                        {
+                            "Description": " loss of taste ",
+                            "Frequency": " 90%  ",
+                            "diseases": {
+                                "Inheritance": "",
+                                "alternativeNames": "corona , covid , sars-cov-19",
+                                "diseaseName": "Covid 19",
+                                "diseaseSymbol": "cov-19",
+                                "id": 1,
+                                "omimId": 12675
+                            },
+                            "hpoTerm": " loss of taste",
+                            "id": 2
+                        }
+                    </pre>
+                </span>
+            </li>
+            <li>
+                <h3 style="text-align: left;color: rgb(139, 34, 34);font-size: 1.5rem;margin:2rem auto;">Patients</h3>
+                <span>Structure when sending data : 
+                    <pre>
+                        {
+                            "name" : string,                 #required
+                            "age" : int,                     #required
+                            "ageOnset" : int,
+                            "ageDiag" : int ,
+                            "symptom_id" : list(int)         #(when adding symptoms to patient (when using PUT patient/patient_id))
+                        }
+                    </pre>
+                </span>
+                <span>Structure when recieving data :
+                    <pre>
+                        {
+                            "age": 20,
+                            "ageDiag": 18,
+                            "ageOnset": 15,
+                            "id": 1,
+                            "name": "mohsen",
+                            "symptoms": [
+                                {
+                                    "Description": " loss of smell ",
+                                    "Frequency": " 90%  ",
+                                    "hpoTerm": " loss of smell",
+                                    "id": 1
+                                },
+                                {
+                                    "Description": " loss of taste ",
+                                    "Frequency": " 90%  ",
+                                    "hpoTerm": " loss of taste",
+                                    "id": 2
+                                }
+                            ]
+                        }
+                    </pre>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div style=" display: inline-block;width: 50%;padding: 2rem;line-height: 20pt; margin:2rem auto; ">
+        <h2 style="margin: auto;text-align: center;color: rgb(139, 34, 34);font-size: 2rem;margin:2rem auto; ">
+            End Points
+        </h2>
+        <ul>
+            <li>
+                <span>
+                    This : 
+                    <a href="/user " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /user(/user_id)
+                    </a>&nbsp;
+                    is the endpoint for accessing and performing <strong>CRUD</strong> opperations on the <strong>users</strong> table. It can only be accessed by a user with role <strong>ADMIN</strong>.
+                </span>
+            </li>
+            <li>
+                <span>
+                    This : 
+                    <a href="/disease " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /disease (/disease_id)
+                    </a>&nbsp;
+                    is the endpoint for accessing and performing <strong>CRUD</strong> opperations on the <strong>diseases</strong> table.It can be accessed by <strong>all roles</strong>.
+                </span>
+            </li>
+            <li>
+                <span>
+                    This : 
+                    <a href="/symptom " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /symptom (/symptom_id)
+                    </a>&nbsp;
+                    is the endpoint for accessing and performing <strong>CRUD</strong> opperations on the <strong>symptoms</strong> table.It can only be accessed by a user with role <strong>ADMIN or DOCTOR</strong>.
+                </span>
+            </li>
+            <li>
+                <span>
+                    This : 
+                    <a href="/patient " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /patient (/patient_id)
+                    </a>&nbsp;
+                    is the endpoint for accessing and performing <strong>CRUD</strong> opperations on the patients table. 
+                    One can only add basic information when creating a new patient. You can only adding symptoms
+                    to existing patients by using the <strong>PUT</strong> method.It can only be accessed by a user with role <strong>DOCTOR</strong>.
+                </span>
+            </li>
+            <li>
+                <span>
+                    This : 
+                    <a href="# " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /patient/patient_id/symptoms
+                    </a>&nbsp;
+                    is the endpoint for checking the patient symptoms. It should be accessed <strong>after adding symptoms to patient.</strong> It can only be accessed by a user with role <strong>DOCTOR</strong>.
+                </span>
+            </li>
+            <li>
+                <span>
+                    This : 
+                    <a href="# " target="_blank " rel="noopener noreferrer " style="color:black ">
+                        /patient/patient_id/diagnosis
+                    </a>&nbsp;
+                    is the endpoint for getting the patient diagnosis. It should be accessed <strong>after adding symptoms to patient.</strong> It can only be accessed by a user with role <strong>DOCTOR</strong>.
+                </span>
+            </li>
+        </ul>
+    </div>
+
+
+    <script src=" " async defer></script>
+</body>
+
+</html>
